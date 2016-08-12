@@ -1,0 +1,117 @@
+{
+    "frames": {
+
+        "bonnet.png": {
+            "frame": {
+                "x": 66,
+                "y": 2,
+                "w": 86,
+                "h": 36
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 2,
+                "y": 22,
+                "w": 86,
+                "h": 36
+            },
+            "sourceSize": {
+                "w": 90,
+                "h": 90
+            }
+        },
+        "bumper.png": {
+            "frame": {
+                "x": 198,
+                "y": 2,
+                "w": 86,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 2,
+                "y": 55,
+                "w": 86,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 90,
+                "h": 90
+            }
+        },
+        "glass.png": {
+            "frame": {
+                "x": 2,
+                "y": 2,
+                "w": 62,
+                "h": 50
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 14,
+                "y": 8,
+                "w": 62,
+                "h": 50
+            },
+            "sourceSize": {
+                "w": 90,
+                "h": 90
+            }
+        },
+        "roof.png": {
+            "frame": {
+                "x": 154,
+                "y": 2,
+                "w": 42,
+                "h": 32
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 24,
+                "y": 8,
+                "w": 42,
+                "h": 32
+            },
+            "sourceSize": {
+                "w": 90,
+                "h": 90
+            }
+        },
+        "wheel.png": {
+            "frame": {
+                "x": 198,
+                "y": 28,
+                "w": 74,
+                "h": 24
+            },
+            "rotated": false,
+            "trimmed": true,
+            "spriteSourceSize": {
+                "x": 9,
+                "y": 60,
+                "w": 74,
+                "h": 24
+            },
+            "sourceSize": {
+                "w": 90,
+                "h": 90
+            }
+        }
+    },
+    "meta": {
+        "app": "http://www.codeandweb.com/texturepacker ",
+        "version": "1.0",
+        "image": "513e128123svd.png",
+        "format": "RGBA8888",
+        "size": {
+            "w": 286,
+            "h": 54
+        },
+        "scale": "1",
+        "smartupdate": "$TexturePacker:SmartUpdate:98b6ab41ccf8bba7fff0eb192bb03f8e:ac8d55da10730abc5069fa89e0a43f04:0cc8a77b70c78c003d18a01f226c6fa5$"
+    }
+}

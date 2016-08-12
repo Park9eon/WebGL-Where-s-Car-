@@ -1,0 +1,249 @@
+<script>
+var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; // 차 부품 목록
+</script>
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>game</title>
+	<script src="./dfajle23svd1/pixi.dev.js"></script>
+</head>
+<body>
+	</body>
+</html>
+<script>
+	//--------------------초기 설정----------------------------
+	
+	var stage = new PIXI.Stage(0xebebeb);  // 필드 생성
+	var renderer = PIXI.autoDetectRenderer(700, 500); // 렌더러 생성
+	var cars = [];
+	var state = 0;
+
+	document.body.appendChild(renderer.view); // BODY에 추가
+	requestAnimFrame(animate); // 업데이트
+
+	renderer.render(stage); // 이미지 씌우기
+	stage.alpha = 0.1;
+	//----------------json 설정, 이미지 로드--------------------
+
+	var carToLoader = ['513e128123svd.json']; // 차 이미지 
+	loader = new PIXI.AssetLoader(carToLoader); // 로드 생성
+	loader.onComplete = init; // 로드 후 초기화 
+	loader.load(); // 로드
+	var carsc = new PIXI.DisplayObjectContainer(); // 차 컨테이너
+	//------------------------------------------------------
+	//------------------------------------------------------
+	var light = new PIXI.Graphics();
+	light.beginFill(0xff0000, 0.5);
+	light.drawCircle(0,0,70);
+	//------------------------------------------------------
+	var time = 0;
+	var dragi = false;
+	var point = 0;
+	var printer = new PIXI.Text(point,{fill:'BLACK'});
+	var helper = new PIXI.Text(point,{fill:'BLACK',font:'10px'});
+	var start = PIXI.Sprite.fromImage('button.png');
+	//------------------------------------------------------
+	var fCar;
+	// 초기 설정
+	function init() {
+		var count=0;
+		for (var k = 0 ; k < 6 ; k ++) { // 차 줄 수
+			for (var j = 0 ; j < 10 ; j++) { // 차 한줄에 개수
+				//-------------------차 공장-----------------------------
+				x = j * 80 + Math.random() * 40 - 50;
+				y = k * 70 + Math.random() * 50;
+				cars[count] = makeCar(count+1,x,y,Math.random()*0xffffff,Math.random()*0xffffff,Math.random()*0xffffff);
+				cars[count].scale.x = 0.6 + ((k-3)/20); // 자동차 크기 설정
+				cars[count].scale.y = 0.6 + ((k-3)/20);
+				carsc.addChild(cars[count++]);
+				//------------------------------------------------------
+			}
+		}
+		
+
+		stage.addChild(carsc); // 차들 추가!!!!!
+		stage.addChild(light); // light효과 추가!!!!!
+		carsc.mask = light;// 테스
+		add();
+		stage.addChild(printer); // 점수 표지판 추가
+		printer.anchor.x = 0.5;
+		printer.anchor.y = 0.5;
+		printer.position.x = 350;
+		printer.position.y = 220;
+		// 추적 차량 설정!!!
+		// 도움말
+		helper.position.x = 350;
+		helper.position.y = 330;
+		helper.anchor.x = 0.5;
+		helper.anchor.y = 0.5;
+		helper.setText("마우스를 움직여서 위 차량을 찾아서 클릭하세요.");
+		stage.addChild(helper);
+
+		// 창 크기에 맞춤설정
+		stage.addChild(start);
+		start.anchor.x = 0.5;
+		start.anchor.y = 0.5;
+		start.scale.x = 0.5;
+		start.scale.y = 0.5;
+		start.position.x = 350;
+		start.position.y = 150;
+		start.interactive = true;
+ 		start.mousedown = start.touchstart = start.tap = function () {
+ 			state = 1;
+ 			start.visible = false;
+		}
+		resize();
+	}
+
+	// 차 만드는 함수(차 번호, 일반 색, 바퀴, 창문)
+	function makeCar(num, x, y, color1, color2, color3) {
+		var container = new PIXI.DisplayObjectContainer(); // 완성차 컨테이너
+		// 위치 설정
+		container.num = num;
+		container.position.x = x;
+		container.position.y = y;
+		for (var i = 0 ; i < carFrames.length ; i++) {
+			var carFrame = carFrames[i]; // 이미지 프레임
+			var c = PIXI.Sprite.fromFrame(carFrame); // 이미지 설정
+			c.anchor.x = 0.5; // 자동차 초점 설정
+			c.anchor.y = 0.5;
+			switch(i) {
+				case 0 :
+				case 1 : 
+				case 4 : container.color1 = c.tint = color1;
+				break;
+				case 2 : container.color2 = c.tint = color2; // 도색 -> 바퀴 
+				break;
+				case 3 : container.color3 = c.tint = color3;
+				break;
+			}
+			container.addChild(c);
+		}
+
+		// 차를 클릭했을 때 이벤트 함수 추가
+		container.interactive = true; // 클릭 허용
+		container.mousedown = container.touchstart = container.tap = onCar; 
+		return container;
+	}//-----------------------------------------------------------------------
+
+	// 차를 클릭 했을 때 이벤트 함수
+	function onCar(data) {
+		if(data.target.num == fCar.num - 1000) {
+			console.log('a');
+			stage.removeChild(fCar);
+			add();
+			point += 5000000;
+		} else {
+			if(data.target.num!=fCar.num)
+			point -= 2400000;
+		}
+		// console.log(data.target.num)
+	}
+
+	// 추적 차량 생성
+	function add() {
+		var _fCar = cars[parseInt(Math.random() * 60)];
+		fCar = makeCar(_fCar.num + 1000, 350, 270, _fCar.color1,_fCar.color2,_fCar.color3);
+		stage.addChild(fCar);
+	}
+
+	// Thread, frame 업데이트
+	function animate() {
+		requestAnimFrame(animate); // 업데이트 }
+		if (state == 1) {
+			time++;
+			point += (time<1000)?1: parseInt(-1 * time/100);
+			printer.setText(point);
+			var e = Math.sin(time/20);
+			if(e < 0){
+				e*=-1;
+			}
+			//printer.scale.x = e * 10;
+			//printer.scale.y = e * 10;
+			//printer.tint = Math.random()* 0xffffff;
+			//printer.rotation = time/10;
+
+			if(fCar!=null) {
+			//	fCar.rotation = time / -12;
+			//	fCar.scale.x = Math.sin(time/10) * 2; 
+			//		fCar.scale.y = Math.sin(time/10) * 2;
+			}
+
+			// stage.setBackgroundColor(Math.random()* 0xffffff);
+			// if(time%100==0) {
+			// 	requestAnimFrame(animate2); // 업데이트 }
+			// } else {
+			// 	requestAnimFrame(animate); // 업데이트 }
+			// }
+			
+			var count = 0;
+			var speed = 3 + time/100000; // 기본 속도
+			for (var i = 0 ; i < 6 ; i ++) {
+				for(var j = 0 ; j < 10; j++) {
+					// 전진!!!!
+					if (i%2==0) {
+						for(var k = 0 ; k < speed ; k++) {
+							cars[count].position.x++;
+						}
+					} else {
+						for(var k = 0 ; k < speed ; k++) {
+							cars[count].position.x--;
+						}
+					}
+					// 범위 초가 재설정
+						if (cars[count].position.x > 700) {
+								cars[count].position.x = -100;
+						}
+						if (cars[count].position.x < -100) {
+								cars[count].position.x = 700;
+						}
+						//cars[count].rotation = time/10;
+						// ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+						//cars[count].scale.x =  Math.sin(time/10) * i * 0.2; 
+						//cars[count].scale.y =  Math.sin(time/10) * i * 0.2;
+						//light.scale.x = Math.sin(time/10) * 2;
+						//light.scale.y = Math.sin(time/10) * 2;
+						///ㅋㅋㅋㅋㅋ
+						// cars[count].position.y += Math.sin(time/10)* 10;
+						// cars[count].rotation += Math.sin(time/10)/20;
+						count++;
+				}
+			}
+		} else {
+			
+		}
+		renderer.render(stage); // 이미지 씌우기
+	}
+
+	// light의 움직임 표시!
+	stage.mousemove = stage.touchmove = function(data) {
+		light.position.x = data.originalEvent.layerX;
+		light.position.y = data.originalEvent.layerY;
+	}
+	// 레벨별 효과 적용
+	function levelUP() {
+		// 중앙 차 회전
+		// 점수 회전
+		// 모든 차 회전
+		// 점수 색 변환
+		// 배경 색 변환
+	}
+
+	function animate2() {
+		time++;
+		if(time%100==0) {
+			requestAnimFrame(animate); // 업데이트 }
+		} else {
+			requestAnimFrame(animate2); // 업데이트 }
+		}
+		renderer.render(stage);
+	}
+
+	// 창 크기에 맞추어 스테이지를 설정함
+	function resize() {
+		stage.scale.x = window.document.body.clientWidth/700;
+		stage.scale.y =	window.document.body.clientHeight/500;
+		// console.log(window.document.body.clientHeight);
+	}
+</script>
+ 
