@@ -1,12 +1,15 @@
 ---
 ---
-<script>
-var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; // 차 부품 목록
-</script>
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>game</title>
+	<meta property="og:url"                content="http://park9eon.sexy/Where-s-Car/" />
+	<meta property="og:type"               content="game" />
+	<meta property="og:title"              content="월..차를 찾아라!" />
+	<meta property="og:description"        content="고속도로에서 차를 찾아보세요." />
+	<meta property="og:image"              content="http://park9eon.sexy/Where-s-Car/screen.png" />
+	<meta name="keywords" 				   content="car, javascript, pixi.js, 월리를 찾아라" />
+	<title>Where`s Car</title>
 	<script src="./assert/pixi.dev.js"></script>
 	<style>
 		body {
@@ -22,8 +25,8 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 </html>
 <script>
 	//--------------------초기 설정----------------------------
-	
-	var stage = new PIXI.Stage(0xebebeb);  // 필드 생성
+    var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; // 차 부품 목록
+    var stage = new PIXI.Stage(0xebebeb);  // 필드 생성
 	var renderer = PIXI.autoDetectRenderer(700, 500); // 렌더러 생성
 	var cars = [];
 	var state = 0;
