@@ -1,3 +1,5 @@
+---
+---
 <script>
 var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; // 차 부품 목록
 </script>
@@ -5,10 +7,18 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 <html>
 <head>
 	<title>game</title>
-	<script src="./dfajle23svd1/pixi.dev.js"></script>
+	<script src="./assert/pixi.dev.js"></script>
+	<style>
+		body {
+			padding: 0px;
+			margin: 0px;
+		}
+		canvas {
+		}
+	</style>
 </head>
 <body>
-	</body>
+</body>
 </html>
 <script>
 	//--------------------초기 설정----------------------------
@@ -25,7 +35,7 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 	stage.alpha = 0.1;
 	//----------------json 설정, 이미지 로드--------------------
 
-	var carToLoader = ['513e128123svd.json']; // 차 이미지 
+	var carToLoader = ['assert/car.design.json']; // 차 이미지
 	loader = new PIXI.AssetLoader(carToLoader); // 로드 생성
 	loader.onComplete = init; // 로드 후 초기화 
 	loader.load(); // 로드
@@ -41,7 +51,7 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 	var point = 0;
 	var printer = new PIXI.Text(point,{fill:'BLACK'});
 	var helper = new PIXI.Text(point,{fill:'BLACK',font:'10px'});
-	var start = PIXI.Sprite.fromImage('button.png');
+	// var start = PIXI.Sprite.fromImage('assert/button.png');
 	//------------------------------------------------------
 	var fCar;
 	// 초기 설정
@@ -79,20 +89,20 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 		helper.setText("마우스를 움직여서 위 차량을 찾아서 클릭하세요.");
 		stage.addChild(helper);
 
-		// 창 크기에 맞춤설정
-		stage.addChild(start);
-		start.anchor.x = 0.5;
-		start.anchor.y = 0.5;
-		start.scale.x = 0.5;
-		start.scale.y = 0.5;
-		start.position.x = 350;
-		start.position.y = 150;
-		start.interactive = true;
- 		start.mousedown = start.touchstart = start.tap = function () {
- 			state = 1;
- 			start.visible = false;
-		}
-		resize();
+//		// 창 크기에 맞춤설정
+//		stage.addChild(start);
+//		start.anchor.x = 0.5;
+//		start.anchor.y = 0.5;
+//		start.scale.x = 0.5;
+//		start.scale.y = 0.5;
+//		start.position.x = 350;
+//		start.position.y = 150;
+//		start.interactive = true;
+// 		start.mousedown = start.touchstart = start.tap = function () {
+//
+// 			start.visible = false;
+//		}
+        state = 1;
 	}
 
 	// 차 만드는 함수(차 번호, 일반 색, 바퀴, 창문)
@@ -132,12 +142,8 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 			console.log('a');
 			stage.removeChild(fCar);
 			add();
-			point += 5000000;
-		} else {
-			if(data.target.num!=fCar.num)
-			point -= 2400000;
+			point ++;
 		}
-		// console.log(data.target.num)
 	}
 
 	// 추적 차량 생성
@@ -151,33 +157,10 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 	function animate() {
 		requestAnimFrame(animate); // 업데이트 }
 		if (state == 1) {
-			time++;
-			point += (time<1000)?1: parseInt(-1 * time/100);
+		    time++;
 			printer.setText(point);
-			var e = Math.sin(time/20);
-			if(e < 0){
-				e*=-1;
-			}
-			//printer.scale.x = e * 10;
-			//printer.scale.y = e * 10;
-			//printer.tint = Math.random()* 0xffffff;
-			//printer.rotation = time/10;
-
-			if(fCar!=null) {
-			//	fCar.rotation = time / -12;
-			//	fCar.scale.x = Math.sin(time/10) * 2; 
-			//		fCar.scale.y = Math.sin(time/10) * 2;
-			}
-
-			// stage.setBackgroundColor(Math.random()* 0xffffff);
-			// if(time%100==0) {
-			// 	requestAnimFrame(animate2); // 업데이트 }
-			// } else {
-			// 	requestAnimFrame(animate); // 업데이트 }
-			// }
-			
 			var count = 0;
-			var speed = 3 + time/100000; // 기본 속도
+			var speed = 3; // 기본 속도
 			for (var i = 0 ; i < 6 ; i ++) {
 				for(var j = 0 ; j < 10; j++) {
 					// 전진!!!!
@@ -191,26 +174,15 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 						}
 					}
 					// 범위 초가 재설정
-						if (cars[count].position.x > 700) {
-								cars[count].position.x = -100;
-						}
-						if (cars[count].position.x < -100) {
-								cars[count].position.x = 700;
-						}
-						//cars[count].rotation = time/10;
-						// ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
-						//cars[count].scale.x =  Math.sin(time/10) * i * 0.2; 
-						//cars[count].scale.y =  Math.sin(time/10) * i * 0.2;
-						//light.scale.x = Math.sin(time/10) * 2;
-						//light.scale.y = Math.sin(time/10) * 2;
-						///ㅋㅋㅋㅋㅋ
-						// cars[count].position.y += Math.sin(time/10)* 10;
-						// cars[count].rotation += Math.sin(time/10)/20;
-						count++;
+					if (cars[count].position.x > 700) {
+							cars[count].position.x = -100;
+					}
+					if (cars[count].position.x < -100) {
+							cars[count].position.x = 700;
+					}
+					count++;
 				}
 			}
-		} else {
-			
 		}
 		renderer.render(stage); // 이미지 씌우기
 	}
@@ -239,11 +211,5 @@ var carFrames = ["bumper.png","bonnet.png","wheel.png","glass.png","roof.png"]; 
 		renderer.render(stage);
 	}
 
-	// 창 크기에 맞추어 스테이지를 설정함
-	function resize() {
-		stage.scale.x = window.document.body.clientWidth/700;
-		stage.scale.y =	window.document.body.clientHeight/500;
-		// console.log(window.document.body.clientHeight);
-	}
 </script>
  
