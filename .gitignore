@@ -52,3 +52,5 @@ fabric.properties
 
 /Gemfile.lock
 /_site/
+
+.DS_Store
